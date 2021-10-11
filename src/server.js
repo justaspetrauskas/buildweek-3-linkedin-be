@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
-import { connectDB } from "./db/db-init.js";
+import { connectDB } from "./modules/db-inits.js";
+import commentsRouter from "./services/comments/index.js";
+import likesRouter from "./services/likes/index.js";
 
 const server = express();
 
@@ -9,6 +11,9 @@ const { PORT = 5000 } = process.env;
 server.use(cors());
 
 server.use(express.json());
+
+server.use("/comments", commentsRouter);
+server.use("/likes", likesRouter);
 
 server.listen(PORT, async () => {
   await connectDB();
