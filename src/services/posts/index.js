@@ -1,8 +1,8 @@
 import express from 'express'
-import db from "../../modules/shem/connect.js"
+import db from "../../modules/index.js"
 
 const posts = express.Router()
-const { Post, User } = db
+const { Post, Profile } = db
 
 
 posts
@@ -11,7 +11,7 @@ posts
         try {
             const data = await Post.findAll({
                 include: [
-                    User
+                    Profile
                 ],
             })
             res.send(data)
