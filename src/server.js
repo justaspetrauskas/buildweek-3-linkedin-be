@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import { connectDB } from "./modules/db-inits.js";
+import commentsRouter from "./services/comments/index.js";
+import likesRouter from "./services/likes/index.js";
 
 // imports
 import profileRouter from "./services/profile/index.js";
@@ -14,6 +16,8 @@ server.use(cors());
 
 server.use(express.json());
 
+server.use("/comments", commentsRouter);
+server.use("/likes", likesRouter);
 server.use("/profile", profileRouter);
 server.use("/posts", postsRouter)
 
