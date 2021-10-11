@@ -13,8 +13,8 @@ router
       if (targetPost) {
         const isItLikedByTargetUser = await Like.findAll({
           where: {
-            post_id: req.params.postId,
-            profile_id: req.body.profile_id
+            postId: req.params.postId,
+            profileId: req.body.profile_id
           }
         });
         if (isItLikedByTargetUser.rows > 0) {
@@ -36,8 +36,8 @@ router
       if (targetPost) {
         await Like.create(
           {
-            profile_id: req.body.profile_id,
-            post_id: req.params.postId
+            profileId: req.body.profile_id,
+            postId: req.params.postId
           },
           { returning: true }
         );
@@ -58,15 +58,15 @@ router
       if (targetPost) {
         const targetLike = await Like.findAll({
           where: {
-            profile_id: req.body.profile_id,
-            post_id: req.params.postId
+            profileId: req.body.profile_id,
+            postId: req.params.postId
           }
         });
         if (targetLike) {
           await Like.destroy({
             where: {
-              profile_id: req.body.profile_id,
-              post_id: req.params.postId
+              profileId: req.body.profile_id,
+              postId: req.params.postId
             }
           });
           res.send({
@@ -94,7 +94,7 @@ router.route("/:postId/all").get(async (req, res, next) => {
     if (targetPost) {
       const likes = await Like.findAll({
         where: {
-          post_id: req.params.postId
+          postId: req.params.postId
         }
       });
       res.send(likes);

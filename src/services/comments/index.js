@@ -27,7 +27,10 @@ router
     try {
       const targetPost = await Post.findByPk(req.params.postId);
       if (targetPost) {
-        const newComments = await Comment.create(req.body);
+        const newComments = await Comment.create({
+          ...req.body,
+          post_id: req.params.postId
+        });
         res.send(newComments);
       } else
         next(
