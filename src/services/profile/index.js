@@ -81,7 +81,7 @@ profileRouter.post(
           returning: true,
         }
       );
-      res.send(addedImage);
+      res.send(addedImage[1][0]);
     } catch (err) {
       next(err);
     }

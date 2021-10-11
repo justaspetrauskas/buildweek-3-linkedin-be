@@ -3,7 +3,7 @@ import s from "sequelize";
 
 const { DataTypes } = s;
 
-const Profile = sequelize.define("profile", {
+const Profile = sequelize.define("profile2", {
   id: { primaryKey: true, type: DataTypes.INTEGER, autoIncrement: true },
   username: { type: DataTypes.STRING, allowNull: false },
   name: { type: DataTypes.STRING, allowNull: false },
