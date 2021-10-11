@@ -16,7 +16,7 @@ const cloudImg = new CloudinaryStorage({
   },
 });
 const experience = express.Router();
-const { Experience, User } = db;
+const { Experience, Profile } = db;
 // == / => GET PUT DELETE
 experience
   .route("/")
@@ -43,7 +43,7 @@ experience
   .get(async (req, res, next) => {
     try {
       const exper = await Experience.findAll({
-        include: User,
+        include: Profile,
         where: { id: req.params.expId },
       });
       if (exper[0]) {
@@ -90,7 +90,7 @@ experience
 experience.route("/:userId/profile").get(async (req, res, next) => {
   try {
     const exper = await Experience.findAll({
-      include: { model: User, where: { id: req.params.userId } },
+      include: { model: Profile, where: { id: req.params.userId } },
     });
     if (exper[0]) {
       res.send(exper);
@@ -135,7 +135,7 @@ experience.route("/:userId/CSV").get(async (req, res, next) => {
   try {
     res.setHeader("Content-Disposition", `attachment; filename=experience.csv`);
     const data = await Experience.findAll({
-      include: { model: User, where: { id: req.params.userId } },
+      include: { model: Profile, where: { id: req.params.userId } },
     });
     const fields = [
       "id",
@@ -145,7 +145,6 @@ experience.route("/:userId/CSV").get(async (req, res, next) => {
       "endDate",
       "description",
       "area",
-      "userId",
     ];
     if (data[0]) {
       const csv = parse(data, { fields });

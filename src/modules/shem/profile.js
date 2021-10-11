@@ -3,7 +3,7 @@ import s from "sequelize";
 
 const { DataTypes } = s;
 
-const User = sequelize.define("user", {
+const Profile = sequelize.define("profile", {
   id: { primaryKey: true, type: DataTypes.INTEGER, autoIncrement: true },
   username: { type: DataTypes.STRING, allowNull: false },
   name: { type: DataTypes.STRING, allowNull: false },
@@ -15,4 +15,4 @@ const User = sequelize.define("user", {
   },
 });
 
-export default User;
+export default Profile;

@@ -1,7 +1,7 @@
 import Experience from "./experience.js";
-import User from "./user.js";
+import Profile from "./profile.js";
 
-User.hasMany(Experience);
-Experience.belongsTo(User);
+Profile.hasMany(Experience);
+Experience.belongsTo(Profile);
 
-export default { User, Experience };
+export default { Profile, Experience };
