@@ -4,6 +4,9 @@ import { connectDB } from "./modules/db-inits.js";
 import commentsRouter from "./services/comments/index.js";
 import likesRouter from "./services/likes/index.js";
 
+// imports
+import profileRouter from "./services/profile/index.js";
+
 const server = express();
 
 const { PORT = 5000 } = process.env;
@@ -14,6 +17,7 @@ server.use(express.json());
 
 server.use("/comments", commentsRouter);
 server.use("/likes", likesRouter);
+server.use("/profile", profileRouter);
 
 server.listen(PORT, async () => {
   await connectDB();
