@@ -1,5 +1,5 @@
-import Post from "post.js"
-import Profile from "profile.js"
+import Post from "./post.js"
+import Profile from "./profile.js"
 
 Post.belongsTo(Profile)
 Profile.hasMany(Post)

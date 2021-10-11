@@ -1,5 +1,7 @@
 import Comment from "./comments.js";
 import Like from "./likes.js";
+import Profile from "./profile.js"
+import Post from "./post.js"
 
 Profile.hasMany(Comment, { foreignKey: "user_id" });
 Comment.belongsTo(Profile, { foreignKey: "user_id" });
