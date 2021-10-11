@@ -6,10 +6,25 @@ import { pipeline } from "stream";
 import { imageUpload } from "../../lib/multerTools.js";
 
 const profileRouter = express.Router();
-const { Profile, Experience } = models;
+const { Profile, Experience, Post, Comment } = models;
 profileRouter.get("/", async (req, res, next) => {
   try {
-    const profiles = await Profile.findAll();
+    const profiles = await Profile.findAll({
+      include: [
+        {
+          model: Experience,
+          attributes: ["company", "role", "startDate", "endDate"],
+        },
+        {
+          model: Post,
+          attributes: ["text"],
+        },
+        {
+          model: Comment,
+          attributes: ["comment"],
+        },
+      ],
+    });
     res.send(profiles);
   } catch (err) {
     next(err);
@@ -18,7 +33,22 @@ profileRouter.get("/", async (req, res, next) => {
 
 profileRouter.get("/:profileId", async (req, res, next) => {
   try {
-    const profile = await Profile.findByPk(req.params.profileId);
+    const profile = await Profile.findByPk(req.params.profileId, {
+      include: [
+        {
+          model: Experience,
+          attributes: ["company", "role", "startDate", "endDate"],
+        },
+        {
+          model: Post,
+          attributes: ["text"],
+        },
+        {
+          model: Comment,
+          attributes: ["comment"],
+        },
+      ],
+    });
     res.send(profile);
   } catch (err) {
     next(err);
