@@ -1,9 +1,9 @@
 import express from "express";
-import models from "../../modules/relations.js";
+import models from "../../modules/relationTable/relations.js";
 import createHttpError from "http-errors";
 
 const router = express.Router();
-const { Comment } = models;
+const { Comment, Post } = models;
 
 router
   .route("/:postId")
@@ -12,7 +12,7 @@ router
       const targetPost = await Post.findByPk(req.params.postId);
       if (targetPost) {
         const comments = await Comment.findAll({
-          where: { post_id: req.params.postId }
+          where: { post_id: req.params.postId },
         });
         res.send(comments);
       } else
@@ -29,7 +29,7 @@ router
       if (targetPost) {
         const newComments = await Comment.create({
           ...req.body,
-          post_id: req.params.postId
+          post_id: req.params.postId,
         });
         res.send(newComments);
       } else
@@ -50,7 +50,7 @@ router
         if (targetComment) {
           const updatedComment = await Comment.update(req.body, {
             where: { id: req.params.commentId },
-            returning: true
+            returning: true,
           });
           res.send(updatedComment);
         } else {
@@ -76,7 +76,7 @@ router
         const targetComment = await Post.findByPk(req.params.commentId);
         if (targetComment) {
           const updatedComment = await Comment.destroy({
-            where: { id: req.params.commentId }
+            where: { id: req.params.commentId },
           });
           res.send(updatedComment);
         } else {

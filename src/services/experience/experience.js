@@ -1,7 +1,7 @@
 import express from "express";
 import createHttpError from "http-errors";
 import s from "sequelize";
-import db from "../../modules/shem/connect.js";
+import models from "../../modules/relationTable/relations.js";
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import multer from "multer";
@@ -16,7 +16,7 @@ const cloudImg = new CloudinaryStorage({
   },
 });
 const experience = express.Router();
-const { Experience, Profile } = db;
+const { Experience, Profile } = models;
 // == / => GET PUT DELETE
 experience
   .route("/")

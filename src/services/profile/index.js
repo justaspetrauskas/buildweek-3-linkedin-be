@@ -1,12 +1,12 @@
 import express from "express";
-import Profile from "../../modules/profile.js";
+import models from "../../modules/relationTable/relations.js";
 import createHttpError from "http-errors";
 import { getPDFReadableStream } from "../../lib/pdf.js";
 import { pipeline } from "stream";
 import { imageUpload } from "../../lib/multerTools.js";
 
 const profileRouter = express.Router();
-
+const { Profile, Experience } = models;
 profileRouter.get("/", async (req, res, next) => {
   try {
     const profiles = await Profile.findAll();

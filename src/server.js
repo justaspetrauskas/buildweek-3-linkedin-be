@@ -22,6 +22,7 @@ server.use("/likes", likesRouter);
 server.use("/profile", profileRouter);
 server.use("/posts", postsRouter);
 server.use("/experience", experience);
+server.use("/comments", commentsRouter);
 
 server.listen(PORT, async () => {
   await connectDB();
