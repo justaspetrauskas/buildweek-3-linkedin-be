@@ -4,6 +4,7 @@ import { connectDB } from "./modules/db-inits.js";
 
 // imports
 import profileRouter from "./services/profile/index.js";
+import postsRouter from "./services/posts/index.js"
 
 const server = express();
 
@@ -14,6 +15,7 @@ server.use(cors());
 server.use(express.json());
 
 server.use("/profile", profileRouter);
+server.use("/posts", postsRouter)
 
 server.listen(PORT, async () => {
   await connectDB();
