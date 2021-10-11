@@ -4,6 +4,7 @@ import listEndpoints from "express-list-endpoints";
 import { connectDB } from "./modules/db-inits.js";
 import experience from "./services/experience/experience.js";
 import users from "./services/users/user.js";
+import { generError, regError } from "./errorHandler.js";
 
 const server = express();
 
@@ -20,7 +21,9 @@ server.listen(PORT, async () => {
   console.table(listEndpoints(server));
   console.log(`Port 🚀 => ${PORT}`);
 });
-
+//=
+server.use(regError);
+server.use(generError);
 server.on("error", (error) => {
   console.log("Server is stoppped ", error);
 });
