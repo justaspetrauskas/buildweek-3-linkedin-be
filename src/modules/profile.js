@@ -21,6 +21,10 @@ const Profile = sequelize.define(
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true,
+      },
     },
     bio: {
       type: DataTypes.STRING,
@@ -42,6 +46,7 @@ const Profile = sequelize.define(
     username: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
   },
   { timestamps: true }
