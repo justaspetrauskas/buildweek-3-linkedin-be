@@ -58,7 +58,8 @@ experience
   })
   .put(async (req, res, next) => {
     try {
-      const data = await Experience.update(req.body, {
+      const newData = { ...req.body, updatedAt: new Date() };
+      const data = await Experience.update(newData, {
         where: {
           id: req.params.expId,
         },
@@ -76,7 +77,6 @@ experience
           id: req.params.expId,
         },
       });
-      console.log(data);
       if (data > 0) {
         res.send({ message: "Ok!" });
       } else {
@@ -97,7 +97,6 @@ experience.route("/:userId/profile").get(async (req, res, next) => {
     } else {
       next(createHttpError(404, `ID:${req.params.userId} , Not found!`));
     }
-    console.log(exper);
   } catch (error) {
     console.log(error);
     next(createHttpError(500));
@@ -117,7 +116,7 @@ experience.route("/:expId/picture").post(
     try {
       const imageUrl = await req.file.path;
       const data = await Experience.update(
-        { image: imageUrl },
+        { image: imageUrl, updatedAt: new Date() },
         {
           where: {
             id: req.params.expId,
@@ -148,11 +147,19 @@ experience.route("/:userId/CSV").get(async (req, res, next) => {
       "area",
       "userId",
     ];
-    const csv = parse(data, { fields });
-    console.log(csv);
-    pipeline(csv, res, (err) => {
-      if (err) next(err);
-    });
+    if (data[0]) {
+      const csv = parse(data, { fields });
+      pipeline(csv, res, (err) => {
+        if (err) next(err);
+      });
+    } else {
+      next(
+        createHttpError(
+          404,
+          `Profile ID:${req.params.userId} , had No experience`
+        )
+      );
+    }
   } catch (error) {
     console.log(error);
     next(createHttpError(500, error));
