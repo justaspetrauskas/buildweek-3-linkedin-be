@@ -1,11 +1,11 @@
 import express from 'express'
 import db from "../../modules/index.js"
 
-const posts = express.Router()
+const postsRouter = express.Router()
 const { Post, Profile } = db
 
 
-posts
+postsRouter
     .route("/")
     .get(async (req, res, next) => {
         try {
@@ -31,7 +31,7 @@ posts
         }
     })
 
-posts
+postsRouter
     .route("/:postId")
 
     .get(async (req, res, next) => {
@@ -66,4 +66,4 @@ posts
         }
     })
 
-export default posts
+export default postsRouter

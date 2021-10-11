@@ -19,10 +19,10 @@ const Post = sequelize.define("post",
             type: DataTypes.STRING,
             allowNull: false,
         },
-
         image: {
             type: DataTypes.STRING,
-            defaultValue: "https://image.url",
+            defaultValue: 
+                "https://external-preview.redd.it/QYZ08WZ7FITBjVNPOpzJDnBFANuewPdkk4JdJ5qU86A.jpg?width=640&crop=smart&auto=webp&s=fd313ec9d9faf35c7072ae93e1f8cb248c47a4cc",
         },
     },
     {
