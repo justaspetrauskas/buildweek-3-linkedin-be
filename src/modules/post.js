@@ -1,6 +1,5 @@
 import sequelize from "./db-inits"
 import s from "sequelize"
-import Profile from "profile.js"
 
 const { DataTypes } = s
 
