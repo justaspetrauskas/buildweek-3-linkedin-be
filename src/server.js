@@ -9,7 +9,7 @@ import { generError, regError } from "./errorHandler.js";
 
 // imports
 import profileRouter from "./services/profile/index.js";
-import postsRouter from "./services/posts/index.js"
+import postsRouter from "./services/posts/index.js";
 
 const server = express();
 
@@ -20,9 +20,9 @@ server.use(express.json());
 
 server.use("/likes", likesRouter);
 server.use("/profile", profileRouter);
-server.use("/posts", postsRouter)
-
+server.use("/posts", postsRouter);
 server.use("/experience", experience);
+server.use("/comments", commentsRouter);
 server.listen(PORT, async () => {
   await connectDB();
   console.table(listEndpoints(server));

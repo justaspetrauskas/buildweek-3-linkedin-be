@@ -1,7 +1,6 @@
 import express from "express";
 import createHttpError from "http-errors";
-import s from "sequelize";
-import db from "../../modules/shem/connect.js";
+import db from "../../modules/relations.js";
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import multer from "multer";
@@ -51,7 +50,6 @@ experience
       } else {
         next(createHttpError(404, `ID: ${req.params.expId}, Not found!`));
       }
-      console.log(exper);
     } catch (error) {
       next(createHttpError(500));
     }

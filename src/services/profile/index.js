@@ -1,12 +1,12 @@
 import express from "express";
-import Profile from "../../modules/profile.js";
+import db from "../../modules/relations.js";
 import createHttpError from "http-errors";
 import { getPDFReadableStream } from "../../lib/pdf.js";
 import { pipeline } from "stream";
 import { imageUpload } from "../../lib/multerTools.js";
 
 const profileRouter = express.Router();
-
+const { Profile } = db;
 profileRouter.get("/", async (req, res, next) => {
   try {
     const profiles = await Profile.findAll();
@@ -30,6 +30,7 @@ profileRouter.post("/", async (req, res, next) => {
     const profile = await Profile.create(req.body);
     res.send(profile);
   } catch (err) {
+    console.log(err);
     next(err);
   }
 });
@@ -70,7 +71,6 @@ profileRouter.post(
   async (req, res, next) => {
     try {
       const imagePath = req.file.path;
-      console.log(imagePath);
       const addedImage = await Profile.update(
         { image: imagePath },
         {
