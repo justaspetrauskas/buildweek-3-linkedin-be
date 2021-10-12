@@ -16,6 +16,9 @@ Comment.belongsTo(Post, { foreignKey: "post_id" });
 Profile.belongsToMany(Post, { through: { model: Like, unique: true } });
 Post.belongsTo(Profile, { through: { model: Like, unique: true } });
 
+Post.hasMany(Like);
+Like.belongsTo(Post);
+
 Post.belongsTo(Profile);
 Profile.hasMany(Post);
 

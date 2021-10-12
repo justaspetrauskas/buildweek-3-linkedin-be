@@ -14,10 +14,11 @@ router
         const isItLikedByTargetUser = await Like.findAll({
           where: {
             postId: req.params.postId,
-            profileId: req.body.profile_id,
-          },
+            profileId: req.body.profile_id
+          }
         });
-        if (isItLikedByTargetUser.rows > 0) {
+        console.log(isItLikedByTargetUser);
+        if (isItLikedByTargetUser.length > 0) {
           res.send({ currentUserLikeStatus: true });
         } else {
           res.send({ currentUserLikeStatus: false });
@@ -37,12 +38,12 @@ router
         await Like.create(
           {
             profileId: req.body.profile_id,
-            postId: req.params.postId,
+            postId: req.params.postId
           },
           { returning: true }
         );
         res.send({
-          message: `${req.body.profile_id}'s like has been added to post with the id of ${req.params.postId}`,
+          message: `${req.body.profile_id}'s like has been added to post with the id of ${req.params.postId}`
         });
       } else
         next(
@@ -59,18 +60,18 @@ router
         const targetLike = await Like.findAll({
           where: {
             profileId: req.body.profile_id,
-            postId: req.params.postId,
-          },
+            postId: req.params.postId
+          }
         });
         if (targetLike) {
           await Like.destroy({
             where: {
               profileId: req.body.profile_id,
-              postId: req.params.postId,
-            },
+              postId: req.params.postId
+            }
           });
           res.send({
-            message: `${req.body.profile_id}'s like has been removed from post with the id of ${req.params.postId}`,
+            message: `${req.body.profile_id}'s like has been removed from post with the id of ${req.params.postId}`
           });
         } else {
           next(
@@ -94,8 +95,8 @@ router.route("/:postId/all").get(async (req, res, next) => {
     if (targetPost) {
       const likes = await Like.findAll({
         where: {
-          postId: req.params.postId,
-        },
+          postId: req.params.postId
+        }
       });
       res.send(likes);
     } else
