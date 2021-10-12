@@ -17,7 +17,6 @@ router
             profileId: req.body.profileId
           }
         });
-        console.log(isItLikedByTargetUser);
         if (isItLikedByTargetUser.length > 0) {
           res.send({ currentUserLikeStatus: true });
         } else {
@@ -59,7 +58,7 @@ router
       if (targetPost) {
         const targetLike = await Like.findAll({
           where: {
-            profileId: req.body.profile_id,
+            profileId: req.body.profileId,
             postId: req.params.postId
           }
         });
