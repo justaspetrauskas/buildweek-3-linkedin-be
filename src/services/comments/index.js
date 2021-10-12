@@ -53,7 +53,7 @@ router
         const targetComment = await Post.findByPk(req.params.commentId);
         if (targetComment) {
           const updatedComment = await Comment.update(req.body, {
-            where: { id: req.params.commentId },
+            where: { id: req.params.commentId, profileId: req.body.profileId },
             returning: true
           });
           res.send(updatedComment);
