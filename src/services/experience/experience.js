@@ -7,6 +7,8 @@ import { CloudinaryStorage } from "multer-storage-cloudinary";
 import multer from "multer";
 import { parse } from "json2csv";
 import { pipeline } from "stream"; // Core module
+import { validationResult } from "express-validator";
+import { postValid } from "./validator.js";
 
 // = CONST
 const cloudImg = new CloudinaryStorage({
@@ -28,12 +30,17 @@ experience
       next(createHttpError(500));
     }
   })
-  .post(async (req, res, next) => {
-    try {
-      const exper = await Experience.create(req.body);
-      res.send(exper);
-    } catch (error) {
-      next(createHttpError(500));
+  .post(postValid, async (req, res, next) => {
+    const errorList = validationResult(req);
+    if (!errorList.isEmpty()) {
+      next(createHttpError(400, [errorList.errors]));
+    } else {
+      try {
+        const exper = await Experience.create(req.body);
+        res.send(exper);
+      } catch (error) {
+        next(createHttpError(500));
+      }
     }
   });
 

@@ -9,10 +9,14 @@ router
   .route("/:postId")
   .get(async (req, res, next) => {
     try {
+      const limit = parseInt(req.query.limit) || 5;
+      const offset = parseInt(req.query.offset) || 0;
       const targetPost = await Post.findByPk(req.params.postId);
       if (targetPost) {
         const comments = await Comment.findAll({
-          where: { post_id: req.params.postId },
+          where: { postId: req.params.postId },
+          limit: limit,
+          offset: offset
         });
         res.send(comments);
       } else
@@ -29,7 +33,7 @@ router
       if (targetPost) {
         const newComments = await Comment.create({
           ...req.body,
-          post_id: req.params.postId,
+          postId: req.params.postId
         });
         res.send(newComments);
       } else
@@ -50,7 +54,7 @@ router
         if (targetComment) {
           const updatedComment = await Comment.update(req.body, {
             where: { id: req.params.commentId },
-            returning: true,
+            returning: true
           });
           res.send(updatedComment);
         } else {
@@ -76,7 +80,7 @@ router
         const targetComment = await Post.findByPk(req.params.commentId);
         if (targetComment) {
           const updatedComment = await Comment.destroy({
-            where: { id: req.params.commentId },
+            where: { id: req.params.commentId }
           });
           res.send(updatedComment);
         } else {
