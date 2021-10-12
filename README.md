@@ -1,4 +1,4 @@
-# buildweek-3-linkedin-be
+# LinkedIn Clone BE
 
 # MODELS #
     PROFILE Model:
