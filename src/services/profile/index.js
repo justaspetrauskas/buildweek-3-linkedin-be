@@ -4,6 +4,8 @@ import createHttpError from "http-errors";
 import { getPDFReadableStream } from "../../lib/pdf.js";
 import { pipeline } from "stream";
 import { imageUpload } from "../../lib/multerTools.js";
+import s from "sequelize";
+const { Op } = s;
 
 const profileRouter = express.Router();
 const { Profile, Experience, Post, Comment } = models;
@@ -15,15 +17,24 @@ profileRouter.get("/", async (req, res, next) => {
           model: Experience,
           attributes: ["company", "role", "startDate", "endDate"],
         },
-        {
-          model: Post,
-          attributes: ["text"],
-        },
-        {
-          model: Comment,
-          attributes: ["comment"],
-        },
+
+        // {
+        //   model: Post,
+        //   attributes: ["text"],
+        // },
+        // {
+        //   model: Comment,
+        //   attributes: ["comment"],
+        // },
       ],
+      where: req.query.search && {
+        [Op.or]: [
+          { name: { [Op.iLike]: `%${req.query.search}%` } },
+          { surname: { [Op.iLike]: `%${req.query.search}%` } },
+        ],
+      },
+      limit: req.query.limit * 5 || 5,
+      offset: req.query.offset > 0 ? (req.query.offset - 1) * 5 : 0,
     });
     res.send(profiles);
   } catch (err) {

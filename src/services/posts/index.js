@@ -2,14 +2,15 @@ import express from "express";
 import models from "../../modules/relationTable/relations.js";
 
 const postsRouter = express.Router();
-const { Post, Profile, Comment } = models;
+const { Post, Profile } = models;
 
 postsRouter
   .route("/")
   .get(async (req, res, next) => {
     try {
       const data = await Post.findAll({
-        include: [Profile, Comment]
+        include: [Profile],
+        limit: req.query.limit * 5 || 5,
       });
       res.send(data);
     } catch (error) {
@@ -30,11 +31,12 @@ postsRouter
 
 postsRouter
   .route("/:postId")
+
   .get(async (req, res, next) => {
     try {
       const data = await Post.findOne({
-        where: { id: req.params.postId },
-        include: [Profile, Comment]
+        where: { id: req.params.id },
+        include: Profile,
       });
       if (data) {
         res.send(data);
@@ -51,9 +53,9 @@ postsRouter
     try {
       const data = await Post.update(req.body, {
         where: {
-          id: req.params.id
+          id: req.params.id,
         },
-        returning: true
+        returning: true,
       });
       res.send(data[1][0]);
     } catch (error) {
@@ -84,10 +86,10 @@ postsRouter
         { image: path },
         {
           where: {
-            id: req.params.postId
+            id: req.params.postId,
           },
 
-          returning: true
+          returning: true,
         }
       );
       res.send(newImage[1][0]);
