@@ -30,8 +30,8 @@ server.listen(PORT, async () => {
   console.log(`Port 🚀 => ${PORT}`);
 });
 //=
-// server.use(regError);
-// server.use(generError);
+server.use(regError);
+server.use(generError);
 server.on("error", (error) => {
   console.log("Server is stoppped ", error);
 });

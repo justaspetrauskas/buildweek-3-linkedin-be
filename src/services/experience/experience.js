@@ -33,8 +33,8 @@ experience
   .post(postValid, async (req, res, next) => {
     const errorList = validationResult(req);
     if (!errorList.isEmpty()) {
-      res.status(401).send(errorList.errors);
-      // next(createHttpError(400, [errorList.errors]));
+      // res.status(401).send(errorList.errors);
+      next(createHttpError(400, errorList.errors));
     } else {
       try {
         const exper = await Experience.create(req.body);
