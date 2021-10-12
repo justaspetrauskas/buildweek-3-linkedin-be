@@ -10,7 +10,7 @@ router
   .get(async (req, res, next) => {
     try {
       const limit = parseInt(req.query.limit) || 5;
-      const offset = parseInt(req.query.limit) || 0;
+      const offset = parseInt(req.query.offset) || 0;
       const targetPost = await Post.findByPk(req.params.postId);
       if (targetPost) {
         const comments = await Comment.findAll({
