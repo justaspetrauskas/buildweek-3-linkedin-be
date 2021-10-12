@@ -11,7 +11,7 @@ postsRouter
       const data = await Post.findAll({
         include: [Profile],
         limit: req.query.limit * 5 || 5,
-    });
+      });
       res.send(data);
     } catch (error) {
       console.log(error);

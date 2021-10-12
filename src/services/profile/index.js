@@ -13,18 +13,11 @@ profileRouter.get("/", async (req, res, next) => {
       include: [
         {
           model: Experience,
-          attributes: ["company", "role", "startDate", "endDate"],
-        },
-        {
-          model: Post,
-          attributes: ["text"],
-        },
-        {
-          model: Comment,
-          attributes: ["comment"],
+          // attributes: ["company", "role", "startDate", "endDate"],
         },
       ],
       limit: req.query.limit * 5 || 5,
+      offset: req.query.limit * 5,
     });
     res.send(profiles);
   } catch (err) {
