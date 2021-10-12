@@ -34,7 +34,7 @@ profileRouter.get("/", async (req, res, next) => {
         ],
       },
       limit: req.query.limit * 5 || 5,
-      offset: req.query.limit * 5,
+      offset: req.query.offset > 0 ? (req.query.offset - 1) * 5 : 0,
     });
     res.send(profiles);
   } catch (err) {
