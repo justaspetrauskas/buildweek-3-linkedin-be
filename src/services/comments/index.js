@@ -9,10 +9,14 @@ router
   .route("/:postId")
   .get(async (req, res, next) => {
     try {
+      const limit = parseInt(req.query.limit) || 5;
+      const offset = parseInt(req.query.limit) || 0;
       const targetPost = await Post.findByPk(req.params.postId);
       if (targetPost) {
         const comments = await Comment.findAll({
-          where: { postId: req.params.postId }
+          where: { postId: req.params.postId },
+          limit: limit,
+          offset: offset
         });
         res.send(comments);
       } else
