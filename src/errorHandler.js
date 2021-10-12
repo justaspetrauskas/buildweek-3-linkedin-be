@@ -1,6 +1,7 @@
 export const regError = (err, req, res, next) => {
   if (err.status >= 400 || err.status < 500) {
-    res.status(err.status).send({ message: err.message });
+    const errors = err[0] ? err[0].map((x) => x.msg).join() : err.message;
+    res.status(err.status).send({ message: errors });
   } else {
     next(err);
   }

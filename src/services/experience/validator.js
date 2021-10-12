@@ -16,7 +16,11 @@ export const postValid = [
     .notEmpty()
     .withMessage("description is a mandatory field!"),
   body("area").exists().notEmpty().withMessage("area is a mandatory field!"),
-  body("profileId").exists().notEmpty().withMessage("profileId is a mandatory field!"),
+  body("profileId")
+    .exists()
+    // .notEmpty()
+    .isNumeric()
+    .withMessage("profileId is a mandatory field! profileId should be Integer!"),
   //   body("readTime.value")
   //     .exists()
   //     .notEmpty()
