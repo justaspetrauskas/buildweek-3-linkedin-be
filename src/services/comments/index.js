@@ -79,10 +79,12 @@ router
       if (targetPost) {
         const targetComment = await Post.findByPk(req.params.commentId);
         if (targetComment) {
-          const updatedComment = await Comment.destroy({
+          const deletedComment = await Comment.destroy({
             where: { id: req.params.commentId }
           });
-          res.send(updatedComment);
+          res.send(
+            `Comment has been deleted with the id of ${req.params.commentId}`
+          );
         } else {
           next(
             createHttpError(
