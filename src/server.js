@@ -6,6 +6,7 @@ import likesRouter from "./services/likes/index.js";
 import listEndpoints from "express-list-endpoints";
 import experience from "./services/experience/experience.js";
 import { generError, regError } from "./errorHandler.js";
+// import { notFoundHandler, badRequestHandler, genericErrorHandler } from "./errorHandler.js";
 
 // imports
 import profileRouter from "./services/profile/index.js";
@@ -29,7 +30,11 @@ server.listen(PORT, async () => {
   console.table(listEndpoints(server));
   console.log(`Port 🚀 => ${PORT}`);
 });
-//=
+
+// server.use(notFoundHandler);
+// server.use(badRequestHandler);
+// server.use(genericErrorHandler);
+
 server.use(regError);
 server.use(generError);
 server.on("error", (error) => {
