@@ -28,6 +28,6 @@ const Post = sequelize.define(
   {
     timestamps: true,
   }
-);
+)
 
-export default Post;
+export default Post
