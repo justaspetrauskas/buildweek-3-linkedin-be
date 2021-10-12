@@ -28,7 +28,10 @@ profileRouter.get("/", async (req, res, next) => {
         // },
       ],
       where: req.query.search && {
-        [Op.or]: [{ name: { [Op.iLike]: `%${req.query.search}%` } }],
+        [Op.or]: [
+          { name: { [Op.iLike]: `%${req.query.search}%` } },
+          { surname: { [Op.iLike]: `%${req.query.search}%` } },
+        ],
       },
       limit: req.query.limit * 5 || 5,
       offset: req.query.limit * 5,
