@@ -13,6 +13,7 @@ router
       if (targetPost) {
         const comments = await Comment.findAll({
           where: { post_id: req.params.postId },
+          limit: req.query.limit ? 0 : 3,
         });
         res.send(comments);
       } else

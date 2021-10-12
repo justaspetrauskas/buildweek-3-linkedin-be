@@ -24,6 +24,7 @@ profileRouter.get("/", async (req, res, next) => {
           attributes: ["comment"],
         },
       ],
+      limit: req.query.limit * 5 || 5,
     });
     res.send(profiles);
   } catch (err) {

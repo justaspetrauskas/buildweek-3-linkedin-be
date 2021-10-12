@@ -10,8 +10,8 @@ postsRouter
     try {
       const data = await Post.findAll({
         include: [Profile],
-        limit: req.query.limit * 6 || 6,
-      });
+        limit: req.query.limit * 5 || 5,
+    });
       res.send(data);
     } catch (error) {
       console.log(error);
