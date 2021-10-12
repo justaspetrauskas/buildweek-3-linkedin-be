@@ -9,11 +9,11 @@ import { validationResult } from "express-validator";
 import { profileValidator } from "./validation.js";
 
 import s from "sequelize";
+import { profile } from "console";
 const { Op } = s;
 
-
 const profileRouter = express.Router();
-const { Profile, Experience, Post, Comment } = models;
+const { Profile, Experience, Post, Comment, FriendRequest, Friends } = models;
 profileRouter.get("/", async (req, res, next) => {
   try {
     const profiles = await Profile.findAll({
@@ -23,14 +23,14 @@ profileRouter.get("/", async (req, res, next) => {
           attributes: ["company", "role", "startDate", "endDate"],
         },
 
-        // {
-        //   model: Post,
-        //   attributes: ["text"],
-        // },
-        // {
-        //   model: Comment,
-        //   attributes: ["comment"],
-        // },
+        {
+          model: Post,
+          attributes: ["text"],
+        },
+        {
+          model: Comment,
+          attributes: ["comment"],
+        },
       ],
       where: req.query.search && {
         [Op.or]: [
@@ -63,6 +63,7 @@ profileRouter.get("/:profileId", async (req, res, next) => {
           model: Comment,
           attributes: ["comment"],
         },
+        { model: Profile, through: { id: req.params.profileId }, as: "fri" },
       ],
     });
     profile ? res.send(profile) : next(createHttpError(404, "User not found"));
@@ -180,6 +181,153 @@ profileRouter.get("/:profileId/CV", async (req, res, next) => {
         )
       );
     }
+  } catch (err) {
+    next(err);
+  }
+});
+
+// add friend
+profileRouter.post("/:profileId/addFriend", async (req, res, next) => {
+  try {
+    // find me by id
+    const currentProfile = await Profile.findOne({
+      where: { id: req.params.profileId },
+    });
+    const profileToFollow = await Profile.findOne({
+      where: { id: req.body.followId },
+    });
+
+    await currentProfile.addProfile(profileToFollow);
+    res.send(`friend request sent to the user ID ${req.body.followId}`);
+  } catch (err) {
+    next(err);
+  }
+});
+// see incoming friend requests
+profileRouter.get("/:profileId/friendRequest", async (req, res, next) => {
+  try {
+    const profile = await Profile.findOne({
+      where: { id: req.params.profileId },
+      attributes: ["id", "name", "surname"],
+    });
+    const friendRequests = (
+      await profile.getFollowed({
+        attributes: ["name", "surname", "id"],
+      })
+    ).map((el) => el);
+    const countFriendRequests = await profile.countFollowed();
+
+    const hasfriendRequestData = {
+      profile,
+      total: countFriendRequests,
+      friendRequests,
+    };
+
+    res.send(hasfriendRequestData);
+  } catch (err) {
+    next(err);
+  }
+});
+// see outgoing friend requests
+profileRouter.get("/:profileId/sentFriendRequests", async (req, res, next) => {
+  try {
+    const profile = await Profile.findOne({
+      where: { id: req.params.profileId },
+      attributes: ["id", "name", "surname"],
+    });
+    const sentfriendRequests = await profile.getProfile({
+      attributes: ["name", "surname", "id"],
+    });
+    const countFriendRequests = await profile.countProfile();
+
+    const sentfriendRequestData = {
+      profile,
+      total: countFriendRequests,
+      sentfriendRequests,
+    };
+
+    res.send(sentfriendRequestData);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// acceptFriendRequest
+profileRouter.post(
+  "/:profileId/acceptFriendRequest",
+  async (req, res, next) => {
+    try {
+      // find me by id
+      const currentProfile = await Profile.findOne({
+        where: { id: req.params.profileId },
+      });
+      const friendToAccept = await Profile.findOne({
+        where: { id: req.body.profileId },
+      });
+      await currentProfile.addFriend(friendToAccept);
+      console.log("accepted");
+      // delete from friendRequest
+      const deletedFromRequests = await FriendRequest.destroy({
+        where: { ProfileId: req.body.profileId },
+      });
+      console.log("deleted");
+
+      res.send(`friend with ID ${req.body.profileId} accepted`);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+// cancelFriendRequest
+profileRouter.put("/:profileId/cancelFriendRequest", async (req, res, next) => {
+  try {
+    // find me by id
+    const profile = await Profile.findByPk(req.params.profileId);
+
+    const cancelRequest = await profile.getFollowed({
+      where: { id: req.body.profileId },
+    });
+    await profile.removeFollowed(cancelRequest);
+    res.send("canceled");
+  } catch (err) {
+    next(err);
+  }
+});
+// see friends
+profileRouter.get("/:profileId/friends", async (req, res, next) => {
+  try {
+    const profile = await Profile.findOne({
+      where: { id: req.params.profileId },
+      attributes: ["id", "name", "surname"],
+    });
+    const friends = (
+      await profile.getFriends({
+        attributes: ["name", "surname", "id"],
+      })
+    ).map((el) => el);
+    const countFriends = await profile.countFriends();
+
+    const friendsData = {
+      profile,
+      total: countFriends,
+      friends,
+    };
+
+    res.send(friendsData);
+  } catch (err) {
+    next(err);
+  }
+});
+// unfriend
+profileRouter.put("/:profileId/unfriend", async (req, res, next) => {
+  try {
+    const profile = await Profile.findByPk(req.params.profileId);
+
+    const friendToRemove = await profile.getFriends({
+      where: { id: req.body.unfriendId },
+    });
+    await profile.removeFriend(friendToRemove);
+    res.send("unfriended");
   } catch (err) {
     next(err);
   }
