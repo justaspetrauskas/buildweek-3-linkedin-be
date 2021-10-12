@@ -7,11 +7,11 @@ import Post from "../schemas/post.js";
 Profile.hasMany(Experience);
 Experience.belongsTo(Profile);
 
-Profile.hasMany(Comment, { foreignKey: "user_id" });
-Comment.belongsTo(Profile, { foreignKey: "user_id" });
+Profile.hasMany(Comment);
+Comment.belongsTo(Profile);
 
-Post.hasMany(Comment, { foreignKey: "post_id" });
-Comment.belongsTo(Post, { foreignKey: "post_id" });
+Post.hasMany(Comment);
+Comment.belongsTo(Post);
 
 Profile.belongsToMany(Post, { through: { model: Like, unique: true } });
 Post.belongsTo(Profile, { through: { model: Like, unique: true } });
