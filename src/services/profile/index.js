@@ -4,6 +4,8 @@ import createHttpError from "http-errors";
 import { getPDFReadableStream } from "../../lib/pdf.js";
 import { pipeline } from "stream";
 import { imageUpload } from "../../lib/multerTools.js";
+import { validationResult } from "express-validator";
+import { profileValidator } from "./validation.js";
 
 const profileRouter = express.Router();
 const { Profile, Experience, Post, Comment } = models;
@@ -49,34 +51,59 @@ profileRouter.get("/:profileId", async (req, res, next) => {
         },
       ],
     });
-    res.send(profile);
+    profile ? res.send(profile) : next(createHttpError(404, "User not found"));
   } catch (err) {
     next(err);
   }
 });
 
-profileRouter.post("/", async (req, res, next) => {
+profileRouter.post("/", profileValidator, async (req, res, next) => {
   try {
-    const profile = await Profile.create(req.body);
-    res.send(profile);
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      // let errorList = errors
+      //   .array()
+      //   .map((el) => el.msg.toString())
+      //   .join();
+      next(
+        createHttpError(400, {
+          message: errors.array().map((el) => el.msg),
+          errors: errors.array(),
+        })
+      );
+    } else {
+      const profile = await Profile.create(req.body);
+      res.send(profile);
+    }
   } catch (err) {
-    next(err);
+    next(createHttpError(400, err.message));
   }
 });
-profileRouter.put("/:profileId", async (req, res, next) => {
+profileRouter.put("/:profileId", profileValidator, async (req, res, next) => {
   try {
-    const profile = await Profile.update(
-      { ...req.body, updatedAt: new Date() },
-      {
-        where: {
-          id: req.params.profileId,
-        },
-        returning: true,
-      }
-    );
-    res.send("updated");
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      next(
+        createHttpError(400, {
+          message: errors.array().map((el) => el.msg),
+          errors: errors.array(),
+        })
+      );
+    } else {
+      const profile = await Profile.update(
+        { ...req.body, updatedAt: new Date() },
+        {
+          where: {
+            id: req.params.profileId,
+          },
+          returning: true,
+        }
+      );
+      res.send(profile[1][0]);
+    }
   } catch (err) {
-    next(err);
+    next(createHttpError(400, err.message));
   }
 });
 

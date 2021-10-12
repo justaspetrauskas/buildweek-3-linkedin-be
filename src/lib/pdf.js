@@ -14,10 +14,8 @@ export const getPDFReadableStream = async (profile) => {
   const imageURLParts = image.split("/");
   const fileName = imageURLParts[imageURLParts.length - 1];
   const [id, extension] = fileName.split(".");
-  console.log(fileName, extension);
   try {
     const response = await imageToBase64(image);
-
     const base64Image = `data:image/${extension};base64,${response}`;
     profileImage = {
       image: base64Image,
@@ -27,6 +25,8 @@ export const getPDFReadableStream = async (profile) => {
   } catch (err) {
     console.log(err);
   }
+
+  // let bio = {};
 
   const printer = new PdfPrinter(fonts);
 
