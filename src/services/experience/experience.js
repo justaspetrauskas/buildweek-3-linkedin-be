@@ -58,7 +58,6 @@ experience
       } else {
         next(createHttpError(404, `ID: ${req.params.expId}, Not found!`));
       }
-      console.log(exper);
     } catch (error) {
       next(createHttpError(500));
     }
