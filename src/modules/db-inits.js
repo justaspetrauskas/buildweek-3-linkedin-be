@@ -7,12 +7,12 @@ const sequelize = new Sequelize(DATABASE_URL, {
   // host: PGHOST,
   dialect: "postgres",
   protocol: 'postgres',
-  dialectOptions: {
-      ssl: {
-          require: true,
-          rejectUnauthorized: false
-      }
-  }
+  // dialectOptions: {
+  //     ssl: {
+  //         require: false,
+  //         rejectUnauthorized: false
+  //     }
+  // }
 });
 
 export const testDB = async () => {
