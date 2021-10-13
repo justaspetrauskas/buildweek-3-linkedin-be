@@ -8,7 +8,7 @@ const router = express.Router();
 const { Like } = models;
 const { Post } = models;
 router
-  .route("/:postId")
+  .route("/:postId/:profileId")
   .get(async (req, res, next) => {
     try {
       const targetPost = await Post.findByPk(req.params.postId);
@@ -16,7 +16,7 @@ router
         const isItLikedByTargetUser = await Like.findAll({
           where: {
             postId: req.params.postId,
-            profileId: req.body.profileId
+            profileId: req.params.profileId
           }
         });
         if (isItLikedByTargetUser.length > 0) {
