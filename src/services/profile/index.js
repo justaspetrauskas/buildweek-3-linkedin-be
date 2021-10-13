@@ -63,7 +63,7 @@ profileRouter.get("/:profileId", async (req, res, next) => {
           model: Comment,
           attributes: ["comment"],
         },
-        { model: Profile, through: { id: req.params.profileId }, as: "fri" },
+        // { model: Profile, through: { id: req.params.profileId }, as: "friends" },
       ],
     });
     profile ? res.send(profile) : next(createHttpError(404, "User not found"));
@@ -196,9 +196,17 @@ profileRouter.post("/:profileId/addFriend", async (req, res, next) => {
     const profileToFollow = await Profile.findOne({
       where: { id: req.body.followId },
     });
-
-    await currentProfile.addProfile(profileToFollow);
-    res.send(`friend request sent to the user ID ${req.body.followId}`);
+    // make sure profile is not in my friends list or request list already
+    const hasFriend = await currentProfile.getFriends({
+      where: { id: req.body.followId },
+    });
+    console.log(hasFriend.length);
+    if (hasFriend.length > 0) {
+      res.send("Person is already a friend");
+    } else {
+      await currentProfile.addProfile(profileToFollow);
+      res.send(`friend request sent to the user ID ${req.body.followId}`);
+    }
   } catch (err) {
     next(err);
   }
@@ -265,6 +273,7 @@ profileRouter.post(
         where: { id: req.body.profileId },
       });
       await currentProfile.addFriend(friendToAccept);
+      await friendToAccept.addFriend(currentProfile);
       console.log("accepted");
       // delete from friendRequest
       const deletedFromRequests = await FriendRequest.destroy({
@@ -322,11 +331,13 @@ profileRouter.get("/:profileId/friends", async (req, res, next) => {
 profileRouter.put("/:profileId/unfriend", async (req, res, next) => {
   try {
     const profile = await Profile.findByPk(req.params.profileId);
+    const friendProfile = await Profile.findByPk(req.body.unfriendId);
 
-    const friendToRemove = await profile.getFriends({
-      where: { id: req.body.unfriendId },
-    });
-    await profile.removeFriend(friendToRemove);
+    // const friendToRemove = await profile.getFriends({
+    //   where: { id: req.body.unfriendId },
+    // });
+    await profile.removeFriends(friendProfile);
+    // await friendProfile.removeFriend(profile);
     res.send("unfriended");
   } catch (err) {
     next(err);

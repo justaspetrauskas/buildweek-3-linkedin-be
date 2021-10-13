@@ -1,12 +1,19 @@
 import { Sequelize } from "sequelize";
-const { PGPORT, PGHOST, PGPASSWORD, PGUSER, PGDATABASE, NODE_ENV,DATABASE_URL } =
-  process.env;
+const {
+  PGPORT,
+  PGHOST,
+  PGPASSWORD,
+  PGUSER,
+  PGDATABASE,
+  NODE_ENV,
+  DATABASE_URL,
+} = process.env;
 
-const sequelize = new Sequelize(DATABASE_URL, {
-  // port: PGPORT,
-  // host: PGHOST,
+const sequelize = new Sequelize(DATABASE_URL, PGUSER, PGPASSWORD, {
+  port: PGPORT,
+  host: PGHOST,
   dialect: "postgres",
-  protocol: 'postgres',
+  // protocol: 'postgres',
   // dialectOptions: {
   //     ssl: {
   //         require: false,
@@ -28,7 +35,7 @@ export const testDB = async () => {
 
 export const connectDB = async () => {
   try {
-    await sequelize.sync({ alter: true });
+    await sequelize.sync({ force: true });
     // console.log("DB connected");
   } catch (error) {
     console.log(error);
