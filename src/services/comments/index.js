@@ -1,6 +1,7 @@
 import express from "express";
 import models from "../../modules/relationTable/relations.js";
 import createHttpError from "http-errors";
+import { commentValidator } from "./validation.js";
 
 const router = express.Router();
 const { Comment, Post } = models;
@@ -27,8 +28,12 @@ router
       next(error);
     }
   })
-  .post(async (req, res, next) => {
+  .post(commentValidator, async (req, res, next) => {
     try {
+      const errorList = validationResult(req);
+      if (!errorList.isEmpty()) {
+        next(createHttpError(400, [errorList.errors]));
+      }
       const targetPost = await Post.findByPk(req.params.postId);
       if (targetPost) {
         const newComments = await Comment.create({
@@ -46,8 +51,12 @@ router
   });
 router
   .route("/:postId/:commentId")
-  .put(async (req, res, next) => {
+  .put(commentValidator, async (req, res, next) => {
     try {
+      const errorList = validationResult(req);
+      if (!errorList.isEmpty()) {
+        next(createHttpError(400, [errorList.errors]));
+      }
       const targetPost = await Post.findByPk(req.params.postId);
       if (targetPost) {
         const targetComment = await Post.findByPk(req.params.commentId);

@@ -1,6 +1,8 @@
 import express from "express";
 import models from "../../modules/relationTable/relations.js";
 import createHttpError from "http-errors";
+import { validationResult } from "express-validator";
+import { likeValidator } from "./validation.js";
 
 const router = express.Router();
 const { Like } = models;
@@ -30,8 +32,12 @@ router
       next(error);
     }
   })
-  .post(async (req, res, next) => {
+  .post(likeValidator, async (req, res, next) => {
     try {
+      const errorList = validationResult(req);
+      if (!errorList.isEmpty()) {
+        next(createHttpError(400, [errorList.errors]));
+      }
       const targetPost = await Post.findByPk(req.params.postId);
       if (targetPost) {
         await Like.create(
