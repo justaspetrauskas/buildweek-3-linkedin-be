@@ -41,7 +41,7 @@ postsRouter
     .get(async (req, res, next) => {
         try {
             const data = await Post.findOne({
-                where: { id: req.params.id },
+                where: { id: req.params.postId },
                 include: Profile,
             });
             if (data) {

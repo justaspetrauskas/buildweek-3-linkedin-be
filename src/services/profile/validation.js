@@ -18,14 +18,11 @@ export const profileValidator = [
     .withMessage("Email must be a string")
     .isEmail()
     .withMessage("Email is not correct"),
-  body("bio")
-    .exists()
-    .withMessage("Bio field cannot be empty")
-    .isString()
-    .withMessage("Bio field must be a string"),
+  body("bio").optional().isString().withMessage("Bio field must be a string"),
+  body("title").optional().isString().withMessage("Title field must be a string"),
+  body("image").optional().isString().withMessage("Image field must be a string"),
   body("area")
-    .exists()
-    .withMessage("Area field cannot be empty")
+    .optional()
     .isString()
     .withMessage("Location must be a string"),
   body("username")
