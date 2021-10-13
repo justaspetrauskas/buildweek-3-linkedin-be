@@ -42,13 +42,13 @@ router
       if (targetPost) {
         await Like.create(
           {
-            profileId: req.body.profileId,
+            profileId: req.params.profileId,
             postId: req.params.postId
           },
           { returning: true }
         );
         res.send({
-          message: `${req.body.profileId}'s like has been added to post with the id of ${req.params.postId}`
+          message: `${req.params.profileId}'s like has been added to post with the id of ${req.params.postId}`
         });
       } else
         next(
@@ -64,19 +64,19 @@ router
       if (targetPost) {
         const targetLike = await Like.findAll({
           where: {
-            profileId: req.body.profileId,
+            profileId: req.params.profileId,
             postId: req.params.postId
           }
         });
         if (targetLike) {
           await Like.destroy({
             where: {
-              profileId: req.body.profileId,
+              profileId: req.params.profileId,
               postId: req.params.postId
             }
           });
           res.send({
-            message: `${req.body.profileId}'s like has been removed from post with the id of ${req.params.postId}`
+            message: `${req.params.profileId}'s like has been removed from post with the id of ${req.params.postId}`
           });
         } else {
           next(
