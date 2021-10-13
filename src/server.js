@@ -6,6 +6,9 @@ import likesRouter from "./services/likes/index.js";
 import listEndpoints from "express-list-endpoints";
 import experience from "./services/experience/experience.js";
 import { generError, regError } from "./errorHandler.js";
+import yaml from "yamljs";
+import swaggerUI from "swagger-ui-express";
+import { join } from "path";
 // import { notFoundHandler, badRequestHandler, genericErrorHandler } from "./errorHandler.js";
 
 // imports
@@ -16,6 +19,10 @@ const server = express();
 
 const { PORT = 5000 } = process.env;
 
+const yamlDocument = yaml.load(
+  join(process.cwd(), "./src/services/docs/postsAndProfilesMissing.yaml")
+);
+
 server.use(cors());
 server.use(express.json());
 
@@ -24,6 +31,7 @@ server.use("/profile", profileRouter);
 server.use("/posts", postsRouter);
 server.use("/experience", experience);
 server.use("/comments", commentsRouter);
+server.use("/docs", swaggerUI.serve, swaggerUI.setup(yamlDocument));
 
 server.listen(PORT, async () => {
   await connectDB();
