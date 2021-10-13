@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-const { PGPORT, PGHOST, PGPASSWORD, PGUSER, PGDATABASE, NODE_ENV } =
+const { PGPORT, PGHOST, PGPASSWORD, PGUSER, PGDATABASE, NODE_ENV,DATABASE_URL } =
   process.env;
 
 const sequelize = new Sequelize(DATABASE_URL, {
