@@ -1,0 +1,652 @@
+openapi: 3.0.0
+info:
+  title: Linkedin copycat API
+  description: ====
+  version: 0.6.0
+servers:
+  - url: http://localhost:5000
+    description: Localhost devserver
+  - url: some
+    description: PROD
+tags:
+  - name: "Comments"
+    description: "Interacting with comments"
+  - name: "Experience"
+    description: "Interacting with experience"
+  - name: "Likes"
+    description: "Interacting with likes"
+  - name: "Profile"
+    description: "Interacting with profiles"
+  - name: "Post"
+    description: "Interacting with posts"
+paths:
+  /comments/{postId}:
+    get:
+      tags:
+        - "Comments"
+      parameters:
+        - name: postId
+          in: path
+          description: Post Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Returns a comment.
+      description: Return list of comments of a post
+      responses:
+        "200": # status code
+          description: A JSON array of comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: The comment ID.
+                    comment:
+                      type: string
+                    createdAt:
+                      format: date-time
+                    updatedAt:
+                      format: date-time
+                    profileId:
+                      type: integer
+                    postId:
+                      type: integer
+    post:
+      tags:
+        - "Comments"
+      parameters:
+        - name: postId
+          in: path
+          description: Post Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment:
+                  type: string
+                profileId:
+                  type: integer
+
+      summary: Post a comment.
+      description: Create new comment and returns it
+      responses:
+        "200": # status code
+          description: A newly created comment
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: The comment ID.
+                  comment:
+                    type: string
+                  createdAt:
+                    format: date-time
+                  updatedAt:
+                    format: date-time
+                  profileId:
+                    type: integer
+                  postId:
+                    type: integer
+
+  /comments/{postId}/{commId}:
+    put:
+      tags:
+        - "Comments"
+      parameters:
+        - name: postId
+          in: path
+          description: Post Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: commId
+          in: path
+          description: Comment Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment:
+                  type: string
+                profileId:
+                  type: integer
+      summary: Returns a comment.
+      description: Updated and return comment of a post
+      responses:
+        "200": # status code
+          description: JSON object of updated comment
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: The comment ID.
+                  comment:
+                    type: string
+                  createdAt:
+                    format: date-time
+                  updatedAt:
+                    format: date-time
+                  profileId:
+                    type: integer
+                  postId:
+                    type: integer
+    delete:
+      tags:
+        - "Comments"
+      parameters:
+        - name: postId
+          in: path
+          description: Post Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: commId
+          in: path
+          description: Comment Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Returns a comment.
+      responses:
+        "200": # status code
+          description: JSON object of updated comment
+          content:
+            application/json:
+              schema:
+                type: string
+  /experience:
+    get:
+      tags:
+        - "Experience"
+      summary: Returns all list of experience.
+      responses:
+        "200": # status code
+          description: JSON objects list of experiences
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  role:
+                    type: string
+                  company:
+                    type: string
+                  startDate:
+                    format: date-time
+                  endDate:
+                    format: date-time
+                  description:
+                    type: string
+                  area:
+                    type: string
+                  image:
+                    type: string
+                  createdAt:
+                    format: date-time
+                  updatedAt:
+                    format: date-time
+                  profileId:
+                    type: integer
+    post:
+      tags:
+        - "Experience"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                company:
+                  type: string
+                startDate:
+                  format: date-time
+                endDate:
+                  format: date-time
+                description:
+                  type: string
+                area:
+                  type: string
+                image:
+                  type: string
+                profileId:
+                  type: integer
+
+      summary: Post a experience.
+      responses:
+        "200": # status code
+          description: JSON object of posted experience
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: The comment ID.
+                  role:
+                    type: string
+                  company:
+                    type: string
+                  startDate:
+                    format: date-time
+                  endDate:
+                    format: date-time
+                  description:
+                    type: string
+                  area:
+                    type: string
+                  image:
+                    type: string
+                  createdAt:
+                    format: date-time
+                  updatedAt:
+                    format: date-time
+                  profileId:
+                    type: integer
+
+  /experience/{expId}:
+    get:
+      tags:
+        - "Experience"
+      parameters:
+        - name: expId
+          in: path
+          description: experience Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Returns a specific experience.
+      responses:
+        "200": # status code
+          description: JSON object of experience
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: The comment ID.
+                  role:
+                    type: string
+                  company:
+                    type: string
+                  startDate:
+                    format: date-time
+                  endDate:
+                    format: date-time
+                  description:
+                    type: string
+                  area:
+                    type: string
+                  image:
+                    type: string
+                  createdAt:
+                    format: date-time
+                  updatedAt:
+                    format: date-time
+                  profileId:
+                    type: integer
+    put:
+      tags:
+        - "Experience"
+      parameters:
+        - name: expId
+          in: path
+          description: experience Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                company:
+                  type: string
+                startDate:
+                  format: date-time
+                endDate:
+                  format: date-time
+                description:
+                  type: string
+                area:
+                  type: string
+                image:
+                  type: string
+                profileId:
+                  type: integer
+      summary: Update a specific experience.
+      responses:
+        "200": # status code
+          description: JSON object of updated experience
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: The comment ID.
+                  role:
+                    type: string
+                  company:
+                    type: string
+                  startDate:
+                    format: date-time
+                  endDate:
+                    format: date-time
+                  description:
+                    type: string
+                  area:
+                    type: string
+                  image:
+                    type: string
+                  createdAt:
+                    format: date-time
+                  updatedAt:
+                    format: date-time
+                  profileId:
+                    type: integer
+    delete:
+      tags:
+        - "Experience"
+      parameters:
+        - name: expId
+          in: path
+          description: exp Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Delete specific experience
+      responses:
+        "200": # status code
+          description: Deleted or not experience
+          content:
+            application/json:
+              schema:
+                type: string
+
+  /experience/{profId}/profile:
+    get:
+      tags:
+        - "Experience"
+      parameters:
+        - name: profId
+          in: path
+          description: Profile Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Return array of profile experiences
+      responses:
+        "200": # status code
+          description: Return array of profile experiences
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: The comment ID.
+                    role:
+                      type: string
+                    company:
+                      type: string
+                    startDate:
+                      format: date-time
+                    endDate:
+                      format: date-time
+                    description:
+                      type: string
+                    area:
+                      type: string
+                    image:
+                      type: string
+                    createdAt:
+                      format: date-time
+                    updatedAt:
+                      format: date-time
+                    profileId:
+                      type: integer
+
+  /experience/{profId}/CSV:
+    get:
+      tags:
+        - "Experience"
+      parameters:
+        - name: profId
+          in: path
+          description: Profile Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Returns a CSV document of profile experiences.
+      responses:
+        "200": # status code
+          description: Return CSV document of profile experiences
+          content:
+            text/csv:
+              schema:
+                type: object
+  /experience/{expId}/picture:
+    get:
+      tags:
+        - "Experience"
+      parameters:
+        - name: expId
+          in: path
+          description: Experience Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Upload a picture for experience
+      responses:
+        "200": # status code
+          description: Return a specific updated experience object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: The comment ID.
+                  role:
+                    type: string
+                  company:
+                    type: string
+                  startDate:
+                    format: date-time
+                  endDate:
+                    format: date-time
+                  description:
+                    type: string
+                  area:
+                    type: string
+                  image:
+                    type: string
+                  createdAt:
+                    format: date-time
+                  updatedAt:
+                    format: date-time
+                  profileId:
+                    type: integer
+
+  /likes/{postId}/{profileId}:
+    get:
+      parameters:
+        - name: postId
+          in: path
+          description: Post Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: profileId
+          in: path
+          description: Post Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      tags:
+        - "Likes"
+      summary: Returns the status profile:post like relation in a boolean value
+      description: Returns a boolean value based on profileId to show if the profile has liked a specific post
+      responses:
+        "200": # status code
+          description: A JSON object containing the relation status of a profile and a post
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  currentUserLikeStatus:
+                    type: boolean
+                    description: like status of user.
+    post:
+      parameters:
+        - name: postId
+          in: path
+          description: Post Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: profileId
+          in: path
+          description: Post Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      tags:
+        - "Likes"
+      summary: Creates profile:post relation
+      description: Creates profile:post relation
+      responses:
+        "200": # status code
+          description: A newly created profile:post relation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  profileId:
+                    type: integer
+                  postId:
+                    type: integer
+
+    delete:
+      tags:
+        - "Likes"
+      parameters:
+        - name: postId
+          in: path
+          description: Post Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: profileId
+          in: path
+          description: Post Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Removes profile:post relation
+      description: Removes profile:post relation
+      responses:
+        "200": # status code
+          description: JSON object with a message
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+  /likes/{postId}/all:
+    get:
+      tags:
+        - "Likes"
+      parameters:
+        - name: postId
+          in: path
+          description: Post Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Returns an array of all likes related to a post.
+      responses:
+        "200": # status code
+          description: A JSON array of like objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: The comment ID.
+                    createdAt:
+                      format: date-time
+                    updatedAt:
+                      format: date-time
+                    profileId:
+                      type: integer
+                    postId:
+                      type: integer
