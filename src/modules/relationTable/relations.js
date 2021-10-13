@@ -1,4 +1,4 @@
-import Experience from "../schemas/Experience.js";
+import Experience from "../schemas/experience.js";
 import Profile from "../schemas/profile.js";
 import Comment from "../schemas/comments.js";
 import Like from "../schemas/likes.js";
