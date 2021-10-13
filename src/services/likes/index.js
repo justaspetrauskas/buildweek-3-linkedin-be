@@ -1,12 +1,29 @@
 import express from "express";
 import models from "../../modules/relationTable/relations.js";
 import createHttpError from "http-errors";
-import { validationResult } from "express-validator";
-import { likeValidator } from "./validation.js";
 
 const router = express.Router();
 const { Like } = models;
 const { Post } = models;
+router.route("/:postId/all").get(async (req, res, next) => {
+  try {
+    const targetPost = await Post.findByPk(req.params.postId);
+    console.log(targetPost);
+    if (targetPost) {
+      const likes = await Like.findAll({
+        where: {
+          postId: req.params.postId
+        }
+      });
+      res.send(likes);
+    } else
+      next(
+        createHttpError(404, `Post  with id ${req.params.postId} not found!`)
+      );
+  } catch (error) {
+    next(error);
+  }
+});
 router
   .route("/:postId/:profileId")
   .get(async (req, res, next) => {
@@ -32,12 +49,8 @@ router
       next(error);
     }
   })
-  .post(likeValidator, async (req, res, next) => {
+  .post(async (req, res, next) => {
     try {
-      const errorList = validationResult(req);
-      if (!errorList.isEmpty()) {
-        next(createHttpError(400, [errorList.errors]));
-      }
       const targetPost = await Post.findByPk(req.params.postId);
       if (targetPost) {
         await Like.create(
@@ -94,23 +107,5 @@ router
       next(error);
     }
   });
-router.route("/:postId/all").get(async (req, res, next) => {
-  try {
-    const targetPost = await Post.findByPk(req.params.postId);
-    if (targetPost) {
-      const likes = await Like.findAll({
-        where: {
-          postId: req.params.postId
-        }
-      });
-      res.send(likes);
-    } else
-      next(
-        createHttpError(404, `Post  with id ${req.params.postId} not found!`)
-      );
-  } catch (error) {
-    next(error);
-  }
-});
 
 export default router;
