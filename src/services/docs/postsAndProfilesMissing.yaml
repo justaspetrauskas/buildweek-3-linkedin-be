@@ -654,7 +654,7 @@ paths:
 /profile:
     get:
       tags:
-        - "Profiles"
+        - "Profile"
       summary: Returns all Profiles on database.
       responses:
         "200": # status code
@@ -684,7 +684,7 @@ paths:
                     type: string
     post:
       tags:
-        - "Profiles"
+        - "Profile"
       summary: Creates a Profile.
       requestBody:
         required: true
@@ -883,7 +883,7 @@ paths:
 /profile/{profileId}/CV:
   get:        
    tags:
-        - "Profile CV"
+        - "Profile"
       parameters:
         - name: profileId
           in: path
@@ -903,7 +903,7 @@ paths:
  
  /profile/{profileId}/addFriend:
  post: 
- tags: -"Send friend request"  
+ tags: -"Profile"  
         parameters:
         - name: profileId
           in: path
