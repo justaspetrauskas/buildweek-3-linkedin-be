@@ -1,12 +1,19 @@
 import { Sequelize } from "sequelize";
-const { PGPORT, PGHOST, PGPASSWORD, PGUSER, PGDATABASE, NODE_ENV,DATABASE_URL } =
-  process.env;
+const {
+  PGPORT,
+  PGHOST,
+  PGPASSWORD,
+  PGUSER,
+  PGDATABASE,
+  NODE_ENV,
+  DATABASE_URL,
+} = process.env;
 
-const sequelize = new Sequelize(DATABASE_URL, {
+const sequelize = new Sequelize(DATABASE_URL, PGUSER, PGPASSWORD, {
   // port: PGPORT,
   // host: PGHOST,
   dialect: "postgres",
-  protocol: 'postgres',
+  protocol: "postgres",
   // dialectOptions: {
   //     ssl: {
   //         require: false,
