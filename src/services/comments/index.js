@@ -28,12 +28,8 @@ router
       next(error);
     }
   })
-  .post(commentValidator, async (req, res, next) => {
+  .post(async (req, res, next) => {
     try {
-      const errorList = validationResult(req);
-      if (!errorList.isEmpty()) {
-        next(createHttpError(400, [errorList.errors]));
-      }
       const targetPost = await Post.findByPk(req.params.postId);
       if (targetPost) {
         const newComments = await Comment.create({
@@ -51,12 +47,8 @@ router
   });
 router
   .route("/:postId/:commentId")
-  .put(commentValidator, async (req, res, next) => {
+  .put(async (req, res, next) => {
     try {
-      const errorList = validationResult(req);
-      if (!errorList.isEmpty()) {
-        next(createHttpError(400, [errorList.errors]));
-      }
       const targetPost = await Post.findByPk(req.params.postId);
       if (targetPost) {
         const targetComment = await Post.findByPk(req.params.commentId);
