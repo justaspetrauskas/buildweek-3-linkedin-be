@@ -650,3 +650,276 @@ paths:
                       type: integer
                     postId:
                       type: integer
+#
+/profile:
+    get:
+      tags:
+        - "Profiles"
+      summary: Returns all Profiles on database.
+      responses:
+        "200": # status code
+          description: JSON object of profiles
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  surname:
+                    type: string
+                  email:
+                    type: string
+                    bio:
+                    type: string
+                    title:
+                    type: string
+                    area:
+                    type: string
+                    image:
+                    type: string
+                    username:
+                    type: string
+    post:
+      tags:
+        - "Profiles"
+      summary: Creates a Profile.
+      requestBody:
+        required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  surname:
+                    type: string
+                  email:
+                    type: string
+                    bio:
+                    type: string
+                    title:
+                    type: string
+                    area:
+                    type: string
+                    image:
+                    type: string
+                    username:
+                    type: string
+
+
+    responses:
+        "200": # status code
+          description: JSON object of posted profile
+          content:
+            application/json:
+                schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  surname:
+                    type: string
+                  email:
+                    type: string
+                  bio:
+                    type: string
+                  title:
+                    type: string
+                  area:
+                    type: string
+                  image:
+                    type: string
+                  username:
+                    type: string
+
+/profile/{profileId}:
+    get:
+      tags:
+        - "Profile"
+      parameters:
+        - name: profileId
+          in: path
+          description: profile Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Returns a specific profile.
+      responses:
+        "200": # status code
+          description: JSON object of experience
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  surname:
+                    type: string
+                  email:
+                    type: string
+                  bio:
+                    type: string
+                  title:
+                    type: string
+                  area:
+                    type: string
+                  image:
+                    type: string
+                  username:
+                    type: string
+    put:
+      tags:
+        - "Profile"
+      parameters:
+        - name: profileId
+          in: path
+          description: profile Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                                id:
+                    type: integer
+                  name:
+                    type: string
+                  surname:
+                    type: string
+                  email:
+                    type: string
+                  bio:
+                    type: string
+                  title:
+                    type: string
+                  area:
+                    type: string
+                  image:
+                    type: string
+                  username:
+                    type: string
+      summary: Update a specific profile.
+      responses:
+        "200": # status code
+          description: JSON object of updated experience
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                                 id:
+                    type: integer
+                  name:
+                    type: string
+                  surname:
+                    type: string
+                  email:
+                    type: string
+                  bio:
+                    type: string
+                  title:
+                    type: string
+                  area:
+                    type: string
+                  image:
+                    type: string
+                  username:
+                    type: string
+    delete:
+      tags:
+        - "Profile"
+      parameters:
+        - name: profileId
+          in: path
+          description: Profile Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Delete specific profile
+      responses:
+        "200": # status code
+          description: Deleted Profile
+          content:
+            application/json:
+              schema:
+                type: string
+                    
+/profile/{profileId}/picture:
+    post:
+      tags:
+        - "Profile Picture"
+         parameters:
+        - name: profileId
+          in: path
+          description: profile Id
+          required: true
+      summary: Changes profile picture.
+      requestBody:
+        required: true
+          content:
+            image/png:
+              schema:
+                 type: string
+                  format: binary
+
+/profile/{profileId}/CV:
+  get:        
+   tags:
+        - "Profile CV"
+      parameters:
+        - name: profileId
+          in: path
+          description: profile Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Returns a specific profile's CV.
+      responses:
+        "200": # status code
+          description: Personal Cv
+          content:
+            application/pdf:
+              schema:
+                type: object
+ 
+ /profile/{profileId}/addFriend:
+ post: 
+ tags: -"Send friend request"  
+        parameters:
+        - name: profileId
+          in: path
+          description: profile Id
+          required: true
+        summary: Send a friend request.
+        requestBody:
+        required: true     
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                followId: 
+                type: Integer
+
+        
+
+          
