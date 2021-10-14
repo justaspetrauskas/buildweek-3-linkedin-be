@@ -651,7 +651,7 @@ paths:
                     postId:
                       type: integer
 
-/profile:
+  /profile:
     get:
       tags:
         - "Profile"
