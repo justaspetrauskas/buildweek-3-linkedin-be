@@ -78,7 +78,7 @@ router
     try {
       const targetPost = await Post.findByPk(req.params.postId);
       if (targetPost) {
-        const targetComment = await Post.findByPk(req.params.commentId);
+        const targetComment = await Comment.findByPk(req.params.commentId);
         if (targetComment) {
           const deletedComment = await Comment.destroy({
             where: { id: req.params.commentId }
