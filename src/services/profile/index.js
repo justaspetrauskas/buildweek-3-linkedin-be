@@ -312,12 +312,9 @@ profileRouter.put("/:profileId/cancelFriendRequest", async (req, res, next) => {
     const cancelRequest = await Profile.findByPk(req.body.profileId);
     const hasCanceled = await profile.hasFollowed(cancelRequest);
     // console.log(hasCanceled);
-    if (hasCanceled) {
-      await profile.removeProfile(cancelRequest);
-      res.send("canceled");
-    } else {
-      next(createHttpError(400, `Has already been canceled`));
-    }
+
+    await profile.removeProfile(cancelRequest);
+    res.send("canceled");
   } catch (err) {
     next(err);
   }
@@ -329,12 +326,8 @@ profileRouter.put("/:profileId/rejectFriendrequest", async (req, res, next) => {
     const profile = await Profile.findByPk(req.params.profileId);
     const rejectRequest = await Profile.findByPk(req.body.profileId);
     const hasRejected = await profile.hasProfile(rejectRequest);
-    if (hasRejected) {
-      await profile.removeProfile(rejectRequest);
-      res.send("rejected");
-    } else {
-      next(createHttpError(400, `Has already been rejected`));
-    }
+    await profile.removeFollowed(rejectRequest);
+    res.send("rejected");
   } catch (err) {
     next(err);
   }
@@ -369,7 +362,7 @@ profileRouter.put("/:profileId/unfriend", async (req, res, next) => {
     const profile = await Profile.findByPk(req.params.profileId);
     const friendProfile = await Profile.findByPk(req.body.unfriendId);
 
-    await profile.removeFriends(friendProfile);
+    await profile.removeFriend(friendProfile);
     await friendProfile.removeFriend(profile);
     res.send("unfriended");
   } catch (err) {
