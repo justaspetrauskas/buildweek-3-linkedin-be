@@ -14,12 +14,12 @@ const sequelize = new Sequelize(DATABASE_URL, PGUSER, PGPASSWORD, {
   host: PGHOST,
   dialect: "postgres",
   protocol: "postgres",
-  dialectOptions: {
-  ssl: {
-  require: false,
-  rejectUnauthorized: false,
-  },
-  },
+//   dialectOptions: {
+//   ssl: {
+//   require: false,
+//   rejectUnauthorized: false,
+//   },
+//   },
 });
 
 export const testDB = async () => {
