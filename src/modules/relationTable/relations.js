@@ -34,12 +34,12 @@ Profile.hasMany(Post);
 
 Profile.belongsToMany(Profile, {
   as: "Profile",
-  through: { model: FriendRequest, unique: false },
+  through: { model: FriendRequest, unique: false, onDelete: "CASCADE" },
   foreignKey: "ProfileId",
 });
 Profile.belongsToMany(Profile, {
   as: "Followed",
-  through: { model: FriendRequest, unique: false },
+  through: { model: FriendRequest, unique: false, onDelete: "CASCADE" },
   foreignKey: "FollowedId",
 });
 
