@@ -20,7 +20,14 @@ profileRouter.get("/", async (req, res, next) => {
       include: [
         {
           model: Experience,
-          attributes: ["id", "company", "role", "startDate", "endDate"],
+          attributes: [
+            "id",
+            "image",
+            "company",
+            "role",
+            "startDate",
+            "endDate",
+          ],
         },
 
         {
