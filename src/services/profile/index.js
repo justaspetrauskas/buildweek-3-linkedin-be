@@ -20,7 +20,14 @@ profileRouter.get("/", async (req, res, next) => {
       include: [
         {
           model: Experience,
-          attributes: ["company", "role", "startDate", "endDate"],
+          attributes: [
+            "id",
+            "image",
+            "company",
+            "role",
+            "startDate",
+            "endDate",
+          ],
         },
 
         {
@@ -53,7 +60,14 @@ profileRouter.get("/:profileId", async (req, res, next) => {
       include: [
         {
           model: Experience,
-          attributes: ["company", "role", "startDate", "endDate"],
+          attributes: [
+            "company",
+            "role",
+            "image",
+            "description",
+            "startDate",
+            "endDate",
+          ],
         },
         {
           model: Post,
@@ -66,6 +80,7 @@ profileRouter.get("/:profileId", async (req, res, next) => {
         // { model: Profile, through: { id: req.params.profileId }, as: "friends" },
       ],
     });
+
     profile ? res.send(profile) : next(createHttpError(404, "User not found"));
   } catch (err) {
     next(err);
@@ -95,29 +110,31 @@ profileRouter.post("/", profileValidator, async (req, res, next) => {
     next(createHttpError(400, err.message));
   }
 });
-profileRouter.put("/:profileId", profileValidator, async (req, res, next) => {
+profileRouter.put("/:profileId", async (req, res, next) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      next(
-        createHttpError(400, {
-          message: errors.array().map((el) => el.msg),
-          errors: errors.array(),
-        })
-      );
-    } else {
-      const profile = await Profile.update(
-        { ...req.body, updatedAt: new Date() },
-        {
-          where: {
-            id: req.params.profileId,
-          },
-          returning: true,
-        }
-      );
-      res.send(profile[1][0]);
-    }
+    // const errors = validationResult(req);
+    // if (!errors.isEmpty()) {
+    //   next(
+    //     createHttpError(400, {
+    //       message: errors.array().map((el) => el.msg),
+    //       errors: errors.array(),
+    //     })
+    //   );
+    // } else {
+    const profile = await Profile.update(
+      { ...req.body, updatedAt: new Date() },
+      {
+        where: {
+          id: parseInt(req.params.profileId),
+        },
+        returning: true,
+      }
+    );
+    console.log(profile);
+    res.send(profile);
+    // }
   } catch (err) {
+    console.log(err);
     next(createHttpError(400, err.message));
   }
 });
