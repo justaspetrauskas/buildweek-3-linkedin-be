@@ -9,17 +9,15 @@ const {
   DATABASE_URL,
 } = process.env;
 
-const sequelize = new Sequelize(DATABASE_URL, PGUSER, PGPASSWORD, {
-  port: PGPORT,
-  host: PGHOST,
+const sequelize = new Sequelize(DATABASE_URL {
   dialect: "postgres",
   protocol: "postgres",
-//   dialectOptions: {
-//   ssl: {
-//   require: false,
-//   rejectUnauthorized: false,
-//   },
-//   },
+  dialectOptions: {
+  ssl: {
+  require: false,
+  rejectUnauthorized: false,
+  },
+  },
 });
 
 export const testDB = async () => {
